@@ -16,13 +16,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.wpsverlinden.ufilan.results.printers;
+package de.wpsverlinden.ufilan.printers;
 
 import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 
-public interface Printer {
-    
-    public void print(Object o, OutputStream os);
-    
+public class InfoPrinter implements Printer {
+
+    public InfoPrinter() {
+    }
+
+    @Override
+    public void print(Object o, OutputStream os) {
+        HashMap<String, String> info = (HashMap<String, String>)o;
+        PrintStream ps = new PrintStream(os);
+        for (Entry<String, String> e : info.entrySet()) {
+            ps.format("%15s|%s\n", "Name", "Value");
+            ps.format("%15s|%s\n", e.getKey(), e.getValue());
+        }
+    }
 }

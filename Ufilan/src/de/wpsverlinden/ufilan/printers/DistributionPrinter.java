@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.wpsverlinden.ufilan.results.printers;
+package de.wpsverlinden.ufilan.printers;
 
 import de.wpsverlinden.ufilan.Chunk;
 import java.io.OutputStream;

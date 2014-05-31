@@ -1,1 +1,0 @@
-"test"  -jar dist/Ufilan.jar -of c:\ufilan\pipe.txt -a histogram text

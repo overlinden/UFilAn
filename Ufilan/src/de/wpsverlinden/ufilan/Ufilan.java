@@ -19,16 +19,16 @@
 package de.wpsverlinden.ufilan;
 
 import de.wpsverlinden.ufilan.analyzers.LengthAnalyzer;
-import de.wpsverlinden.ufilan.results.printers.BasicMapPrinter;
+import de.wpsverlinden.ufilan.printers.BasicMapPrinter;
 import de.wpsverlinden.ufilan.analyzers.ChunkDistributionAnalyzer;
 import de.wpsverlinden.ufilan.analyzers.ChunkLocationAnalyzer;
 import de.wpsverlinden.ufilan.analyzers.ContentAnalyzer;
 import de.wpsverlinden.ufilan.analyzers.EntropyAnalyzer;
 import de.wpsverlinden.ufilan.analyzers.TypeAnalyzer;
-import de.wpsverlinden.ufilan.results.printers.DistributionHistogramPrinter;
-import de.wpsverlinden.ufilan.results.printers.DistributionTextPrinter;
-import de.wpsverlinden.ufilan.results.printers.InfoPrinter;
-import de.wpsverlinden.ufilan.results.printers.Printer;
+import de.wpsverlinden.ufilan.printers.DistributionHistogramPrinter;
+import de.wpsverlinden.ufilan.printers.DistributionTextPrinter;
+import de.wpsverlinden.ufilan.printers.InfoPrinter;
+import de.wpsverlinden.ufilan.printers.Printer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -155,17 +155,18 @@ public class Ufilan {
 
     private void printHelp() {
         ConsolePrinter.getInstance().enable();
-        System.out.println("Usage: java -jar ufilan [-if <inputfile>] [-of <outputfile>] [-c <chunksize>] [-s <seeksize>] -a <action> [<actionparam>]");
+        System.out.println("Usage: java -jar ufilan [-if <inputfile>] [-of <outputfile>] [-c <chunksize>]");
+        System.out.println("                        [-s <seeksize>] -a <action> [<actionparam>]");
         System.out.println();
         System.out.println("-if <inputfile>              path of the input file. If null the stdin is used");
         System.out.println("-of <outputfile>             path of the output file. If null stdout is used");
-        System.out.println("-c <chunksize>               chunk size in bytes used for input parsing. Default value: 1 byte");
-        System.out.println("-s <seeksize>                skips the given number of bytes start parsing. Default value: 0 byte");
-        System.out.println("-a histogram                 generate a text or graphic histogram. Param \"text\" or \"img\".");
-        System.out.println("   map                       generate a graphic distribution map");
-        System.out.println("   type                      analyze the input to determine the type");
-        System.out.println("   size                      calculate the input size");
-        System.out.println("   entropy                   calculate the entropy");
+        System.out.println("-c  <chunksize>              chunk size in bytes used for input parsing. Default value: 1 byte");
+        System.out.println("-s  <seeksize>               skips the given number of bytes start parsing. Default value: 0 byte");
+        System.out.println("-a  histogram                generate a text or graphic histogram. Param \"text\" or \"img\".");
+        System.out.println("    map                      generate a graphic distribution map");
+        System.out.println("    type                     analyze the input to determine the type");
+        System.out.println("    size                     calculate the input size");
+        System.out.println("    entropy                  calculate the entropy");
         System.out.println();
         System.out.println("Simple examples:");
         System.out.println("Read data from stdin and print the type to stdout");
