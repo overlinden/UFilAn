@@ -16,21 +16,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.wpsverlinden.ufilan.tests;
+package de.wpsverlinden.ufilan;
 
-import de.wpsverlinden.ufilan.ConsolePrinter;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-public class LoggerTest {
+@RunWith(Suite.class)
+@Suite.SuiteClasses({de.wpsverlinden.ufilan.ChunkTest.class, de.wpsverlinden.ufilan.LoggerTest.class, de.wpsverlinden.ufilan.ChunkDistributionAnalyzerTest.class, de.wpsverlinden.ufilan.EntropyAnalyzerTest.class, de.wpsverlinden.ufilan.ChunkLocationAnalyzerTest.class, de.wpsverlinden.ufilan.LengthAnalyzerTest.class})
+public class AllTests {
     
-    public LoggerTest() {
-    }
-    
-    @Test
-    public void testIsSingleton() {
-        ConsolePrinter log1 = ConsolePrinter.getInstance();
-        ConsolePrinter log2 = ConsolePrinter.getInstance();
-        assertSame(log1, log2);
-    }
 }
