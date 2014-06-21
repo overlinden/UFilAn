@@ -15,14 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package de.wpsverlinden.ufilan.printers;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map.Entry;
-
 
 public class InfoPrinter implements Printer {
 
@@ -31,11 +29,11 @@ public class InfoPrinter implements Printer {
 
     @Override
     public void print(Object o, OutputStream os) {
-        HashMap<String, String> info = (HashMap<String, String>)o;
+        HashMap<String, String> info = (HashMap<String, String>) o;
         PrintStream ps = new PrintStream(os);
+        ps.format("%15s | %s\n", "Name", "Value");
         for (Entry<String, String> e : info.entrySet()) {
-            ps.format("%15s|%s\n", "Name", "Value");
-            ps.format("%15s|%s\n", e.getKey(), e.getValue());
+            ps.format("%15s | %s\n", e.getKey(), e.getValue());
         }
     }
 }

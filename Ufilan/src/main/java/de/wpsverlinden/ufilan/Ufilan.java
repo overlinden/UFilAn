@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package de.wpsverlinden.ufilan;
 
 import de.wpsverlinden.ufilan.analyzers.LengthAnalyzer;
@@ -34,10 +33,18 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.PosixParser;
 
 public class Ufilan {
 
     private String[] args;
+    private Options options;
     private OutputStream output = System.out;
     private InputStream input = System.in;
     private int chunkSize = 1;
@@ -60,71 +67,91 @@ public class Ufilan {
     private void start() {
         System.out.println("UFilAn 1.0 - written by Oliver Verlinden (http://wps-verlinden.de)");
         try {
-            parseParameter();
+            CommandLine cmd = initCli();
+            prepareParameter(cmd);
             run();
-            System.exit(0);
+        } catch (ParseException pex) {
+            System.out.println(pex.getMessage());
+            printHelp();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
-            System.exit(-1);
         }
     }
 
-    private void parseParameter() throws Exception {
+    private CommandLine initCli() throws ParseException {
+        options = new Options();
+        options.addOption(OptionBuilder.withArgName("action")
+                .isRequired()
+                .hasArg()
+                .withDescription("action to perform (histogram_text, histogram_img, map, type, size, entropy)")
+                .create("a")
+        );
+        options.addOption(OptionBuilder.withArgName("file")
+                .hasArg()
+                .withDescription("path of the input file. If null, stdin is used")
+                .create("if")
+        );
+        options.addOption(OptionBuilder.withArgName("file")
+                .hasArg()
+                .withDescription("path of the output file. If null, stdout is used")
+                .create("of")
+        );
+        options.addOption(OptionBuilder.withArgName("byte")
+                .hasArg()
+                .withDescription("chunk size in bytes used for input parsing. Default value: 1 byte")
+                .create("c")
+        );
+        options.addOption(OptionBuilder.withArgName("byte")
+                .hasArg()
+                .withDescription("skips the given number of bytes start parsing. Default value: 0 byte")
+                .create("s")
+        );
+        
+        CommandLineParser parser = new PosixParser();
+        return parser.parse(options, args);
+    }
 
-        if (args.length == 0) {
+    private void prepareParameter(CommandLine cmd) throws Exception {
+
+        if (cmd.getOptions().length == 0) {
             printHelp();
             System.exit(0);
         }
 
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-if")) {
-                input = new FileInputStream(new File(args[++i]));
+        action = cmd.getOptionValue("a");
+        
+        if (cmd.hasOption("if")) {
+            input = new FileInputStream(new File(cmd.getOptionValue("if")));
+        }
+        if (cmd.hasOption("of")) {
+            output = new FileOutputStream(new File(cmd.getOptionValue("of")));
+            ConsolePrinter.getInstance().enable(); //enable log output on console when writing data stream to file
+        }
+        if (cmd.hasOption("c")) {
+            try {
+                chunkSize = Integer.parseInt(cmd.getOptionValue("c"));
+            } catch (NumberFormatException numberFormatException) {
+                throw new Exception("Invalid chunk size: " + cmd.getOptionValue("c"));
             }
-            if (args[i].equals("-of")) {
-                output = new FileOutputStream(new File(args[++i]));
-                ConsolePrinter.getInstance().enable(); //enable log output on console when writing data stream to file
-            }
-            if (args[i].equals("-c")) {
-                try {
-                    chunkSize = Integer.parseInt(args[++i]);
-                } catch (NumberFormatException numberFormatException) {
-                    throw new Exception("Invalid chunk size: " + args[i]);
-                }
-                if (chunkSize <= 0) {
-                    throw new Exception("Chunk size must be positive.");
-                }
-            }
-           if (args[i].equals("-s")) {
-                try {
-                    seekSize = Integer.parseInt(args[++i]);
-                } catch (NumberFormatException numberFormatException) {
-                    throw new Exception("Invalid chunk size: " + args[i]);
-                }
-                if (seekSize <= 0) {
-                    throw new Exception("Chunk size must be positive.");
-                }
-            }
-            if (args[i].equals("-a")) {
-                action = args[++i];
-                if (i < args.length - 1 ) actionParameter = args[++i];
+        }
+        if (cmd.hasOption("s")) {
+            try {
+                seekSize = Integer.parseInt(cmd.getOptionValue("s"));
+            } catch (NumberFormatException numberFormatException) {
+                throw new Exception("Invalid seek size: " + cmd.getOptionValue("s"));
             }
         }
     }
 
     private void run() throws Exception {
         switch (action) {
-            case "histogram":
+            case "histogram_text":
                 ca = new ChunkDistributionAnalyzer(chunkSize);
-                switch (actionParameter) {
-                    case "text":
-                        p = new DistributionTextPrinter();
-                        break;
-                    case "img":
-                        p = new DistributionHistogramPrinter();
-                        break;
-                    default:
-                        throw new Exception("Invalid parameter for action \"" + action +"\".");
-                }
+                p = new DistributionTextPrinter();
+                break;
+            case "histogram_img":
+                ca = new ChunkDistributionAnalyzer(chunkSize);
+                p = new DistributionHistogramPrinter();
                 break;
             case "map":
                 ca = new ChunkLocationAnalyzer(chunkSize);
@@ -155,35 +182,7 @@ public class Ufilan {
 
     private void printHelp() {
         ConsolePrinter.getInstance().enable();
-        System.out.println("Usage: java -jar ufilan [-if <inputfile>] [-of <outputfile>] [-c <chunksize>]");
-        System.out.println("                        [-s <seeksize>] -a <action> [<actionparam>]");
-        System.out.println();
-        System.out.println("-if <inputfile>              path of the input file. If null the stdin is used");
-        System.out.println("-of <outputfile>             path of the output file. If null stdout is used");
-        System.out.println("-c  <chunksize>              chunk size in bytes used for input parsing. Default value: 1 byte");
-        System.out.println("-s  <seeksize>               skips the given number of bytes start parsing. Default value: 0 byte");
-        System.out.println("-a  histogram                generate a text or graphic histogram. Param \"text\" or \"img\".");
-        System.out.println("    map                      generate a graphic distribution map");
-        System.out.println("    type                     analyze the input to determine the type");
-        System.out.println("    size                     calculate the input size");
-        System.out.println("    entropy                  calculate the entropy");
-        System.out.println();
-        System.out.println("Simple examples:");
-        System.out.println("Read data from stdin and print the type to stdout");
-        System.out.println("java -jar ufilan -a type");
-        System.out.println();
-        System.out.println("Read data from stdin and save the graphic histogram to /tmp/histogram.bmp");
-        System.out.println("java -jar ufilan -of /tmp/histogram.bmp -a histogram img");
-        System.out.println();
-        System.out.println("Read data from /tmp/in.xml and print the entropy information to stdout");
-        System.out.println("java -jar ufilan -if /tmp/in.bmp -a entropy");
-        System.out.println();
-        System.out.println("Advanced examples:");
-        System.out.println("Read data from /tmp/input.txt with 2 byte chunks, skip the first 10 byte and print the most recent chunks");
-        System.out.println("java -jar ufilan -if /tmp/input.txt -c 2 -s 10 -a histogram txt | head -n 11");
-        System.out.println();
-        System.out.println("Calculate the entropy of the unix random number generator");
-        System.out.println("dd if=/dev/urandom bs=1 count=100k | java -jar ufilan -a entropy");
-        System.out.println();
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("java -jar ufilan", options, true);
     }
 }

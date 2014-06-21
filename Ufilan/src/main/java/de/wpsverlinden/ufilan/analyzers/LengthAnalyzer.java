@@ -20,11 +20,12 @@ package de.wpsverlinden.ufilan.analyzers;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 
 public class LengthAnalyzer implements ContentAnalyzer {
 
     private static int BUFF_SIZE = 4096;
-
+    private HashMap<String, String> result = new HashMap<>();
     @Override
     public Object analyze(InputStream is) throws IOException {
 
@@ -38,6 +39,7 @@ public class LengthAnalyzer implements ContentAnalyzer {
         while ((bytesRead = is.read(tmp)) != -1) {
             size += bytesRead;
         }
-        return new String[]{"Input length", size + " byte(s)"};
+        result.put("Input length", size + " byte(s)");
+        return result;
     }
 }

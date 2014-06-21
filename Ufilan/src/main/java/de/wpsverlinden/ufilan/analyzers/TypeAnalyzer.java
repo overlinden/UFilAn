@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
 package de.wpsverlinden.ufilan.analyzers;
 
 import com.j256.simplemagic.ContentInfo;
@@ -31,16 +30,13 @@ public class TypeAnalyzer implements ContentAnalyzer {
     @Override
     public Object analyze(InputStream is) throws IOException {
         getContentInfo(is);
-        
         return result;
     }
 
     private void getContentInfo(InputStream is) throws IOException {
         ContentInfoUtil util = new ContentInfoUtil();
         ContentInfo info = util.findMatch(is);
-        if (info != null) {
-            result.put("MagicMessage", info.getMessage());
-            result.put("MagicName", info.getName());
-        }
+        result.put("MagicMessage", info != null ? info.getMessage() : "unknown");
+        result.put("MagicName", info != null ? info.getName() : "unknown");
     }
 }
