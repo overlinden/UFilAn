@@ -8,7 +8,37 @@
     <packaging>jar</packaging>
 
     <name>Ufilan</name>
-    <url>http://maven.apache.org</url>
+    <url>http://github.com/overlinden/UFilAn</url>
+
+    <scm>
+	    <url>http://github.com/overlinden/UFilAn</url>
+    	<connection>scm:git:ssh://git@github.com/overlinden/UFilAn.git</connection>
+    	<developerConnection>scm:git:ssh://git@github.com/overlinden/UFilAn.git</developerConnection>
+    </scm>
+
+    <licenses>
+        <license>
+            <name>GNU GPL 3 or any later version</name>
+            <url>http://www.gnu.org/licenses/gpl.txt</url>
+            <distribution>manual</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+    	<developer>
+    		<id>overlinden</id>
+    		<name>Oliver Verlinden</name>
+    		<url>http://wps-verlinden.de</url>
+    		<organization>WPS Verlinden</organization>
+    		<organizationUrl>http://wps-verlinden.de</organizationUrl>
+    		<roles>
+    			<role>architect</role>
+    			<role>developer</role>
+    		</roles>
+    		<timezone>+1</timezone>
+    	</developer>
+    </developers>
+
     <build>
         <plugins>
             <plugin>
