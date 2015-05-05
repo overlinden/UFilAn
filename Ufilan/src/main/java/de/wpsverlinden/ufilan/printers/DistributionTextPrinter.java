@@ -39,7 +39,7 @@ public class DistributionTextPrinter implements Printer {
 
         ps.format("%10s|%10s|%s\n", "Char code", "Abs count", "% count");
         distribution.entrySet().stream()
-                .sorted((e1, e2) -> Integer.compare(e1.getValue(), e2.getValue()))
+                .sorted((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()))
                 .forEachOrdered((e) -> ps.format("%10s|%10s|%s\n", e.getKey().toString(), e.getValue(), df.format((float) e.getValue() / total * 100) + "%"));
     }
 }

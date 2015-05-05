@@ -20,7 +20,7 @@ package de.wpsverlinden.ufilan.printers;
 import de.wpsverlinden.ufilan.Result;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.HashMap;
+import java.util.Map;
 
 public class InfoPrinter implements Printer {
 
@@ -29,10 +29,15 @@ public class InfoPrinter implements Printer {
 
     @Override
     public void print(Result r, OutputStream os) {
-        HashMap<String, String> info = (HashMap<String, String>) r.getResult();
         PrintStream ps = new PrintStream(os);
-        ps.format("%15s | %s\n", "Name", "Value");
-        info.entrySet().stream()
-                .forEachOrdered((e) -> ps.format("%15s | %s\n", e.getKey(), e.getValue())); 
+        if (r.getResult() instanceof Map) {
+            Map<Object, Object> m = (Map) r.getResult();
+            ps.format("%15s | %s\n", "Name", "Value");
+            m.entrySet().stream()
+                .forEachOrdered((e) -> ps.format("%15s | %s\n", e.getKey(), e.getValue()));
+        } else {
+            ps.format("%s\n", "Value");
+            ps.format("%s\n", r.getResult());
+        }
     }
 }
