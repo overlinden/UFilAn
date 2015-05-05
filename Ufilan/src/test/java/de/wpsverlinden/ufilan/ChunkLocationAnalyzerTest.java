@@ -18,8 +18,6 @@
 
 package de.wpsverlinden.ufilan;
 
-import de.wpsverlinden.ufilan.Chunk;
-import de.wpsverlinden.ufilan.ConsolePrinter;
 import de.wpsverlinden.ufilan.analyzers.ChunkLocationAnalyzer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -37,6 +35,13 @@ public class ChunkLocationAnalyzerTest {
     @BeforeClass
     public static void setup() {
         ConsolePrinter.getInstance().disable();
+    }
+    
+    @Test
+    public void testReturnsCorrectResultType() throws IOException {
+        InputStream is = new ByteArrayInputStream("".getBytes());
+        Result result = new ChunkLocationAnalyzer(1).analyze(is);
+        assertEquals(result.getType(),Result.TYPE.CHUNKLOCATION);
     }
     
     @Test(expected = IOException.class)

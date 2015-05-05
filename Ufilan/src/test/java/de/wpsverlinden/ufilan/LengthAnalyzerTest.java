@@ -18,12 +18,10 @@
 
 package de.wpsverlinden.ufilan;
 
-import de.wpsverlinden.ufilan.ConsolePrinter;
 import de.wpsverlinden.ufilan.analyzers.LengthAnalyzer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
@@ -36,6 +34,13 @@ public class LengthAnalyzerTest {
     @BeforeClass
     public static void setup() {
         ConsolePrinter.getInstance().disable();
+    }
+    
+    @Test
+    public void testReturnsCorrectResultType() throws IOException {
+        InputStream is = new ByteArrayInputStream("".getBytes());
+        Result result = new LengthAnalyzer().analyze(is);
+        assertEquals(result.getType(),Result.TYPE.LENGTH);
     }
     
     @Test(expected = IOException.class)

@@ -36,6 +36,13 @@ public class EntropyAnalyzerTest {
         ConsolePrinter.getInstance().disable();
     }
     
+    @Test
+    public void testReturnsCorrectResultType() throws IOException {
+        InputStream is = new ByteArrayInputStream("".getBytes());
+        Result result = new EntropyAnalyzer(1).analyze(is);
+        assertEquals(result.getType(),Result.TYPE.ENTROPY);
+    }
+    
     @Test(expected = IOException.class)
     public void testThrowsIOExceptionOnNullInputStream() throws IOException {
         new EntropyAnalyzer(1).analyze(null);
