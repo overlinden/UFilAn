@@ -21,7 +21,6 @@ import de.wpsverlinden.ufilan.Result;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 public class InfoPrinter implements Printer {
 
@@ -33,8 +32,7 @@ public class InfoPrinter implements Printer {
         HashMap<String, String> info = (HashMap<String, String>) r.getResult();
         PrintStream ps = new PrintStream(os);
         ps.format("%15s | %s\n", "Name", "Value");
-        for (Entry<String, String> e : info.entrySet()) {
-            ps.format("%15s | %s\n", e.getKey(), e.getValue());
-        }
+        info.entrySet().stream()
+                .forEachOrdered((e) -> ps.format("%15s | %s\n", e.getKey(), e.getValue())); 
     }
 }

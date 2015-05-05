@@ -23,51 +23,23 @@ import de.wpsverlinden.ufilan.Result;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.text.DecimalFormat;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 public class DistributionTextPrinter implements Printer {
 
-    private DecimalFormat df = new DecimalFormat("0.00");
+    private final DecimalFormat df = new DecimalFormat("0.00");
 
     @Override
     public void print(Result r, OutputStream os) {
         HashMap<Chunk, Integer> distribution = (HashMap<Chunk, Integer>)r.getResult();
-
         PrintStream ps = new PrintStream(os);
-        int total = 0;
-        for (int num : distribution.values()) {
-            total += num;
-        }
+        int total = distribution.values().parallelStream()
+                .mapToInt((x) -> x)
+                .sum();
 
         ps.format("%10s|%10s|%s\n", "Char code", "Abs count", "% count");
-        for (Entry<Chunk, Integer> e : entriesSortedByValues(distribution)) {
-            ps.format("%10s|%10s|%s\n", e.getKey().toString(), e.getValue(), df.format((float) e.getValue() / total * 100) + "%");
-        }
-    }
-
-    private String align(String s) {
-        int i = 0;
-        while (s.charAt(i) == '0') {
-            i++;
-        }
-        return s.substring(0, i + 1).replace('0', ' ') + s.substring(i + 1);
-    }
-
-    private <K, V extends Comparable<? super V>> SortedSet<Map.Entry<K, V>> entriesSortedByValues(Map<K, V> map) {
-        SortedSet<Map.Entry<K, V>> sortedEntries = new TreeSet<>(
-                new Comparator<Map.Entry<K, V>>() {
-            @Override
-            public int compare(Map.Entry<K, V> e1, Map.Entry<K, V> e2) {
-                int res = e2.getValue().compareTo(e1.getValue());
-                return res != 0 ? res : 1; // Special fix to preserve items with equal values
-            }
-        });
-        sortedEntries.addAll(map.entrySet());
-        return sortedEntries;
+        distribution.entrySet().stream()
+                .sorted((e1, e2) -> Integer.compare(e1.getValue(), e2.getValue()))
+                .forEachOrdered((e) -> ps.format("%10s|%10s|%s\n", e.getKey().toString(), e.getValue(), df.format((float) e.getValue() / total * 100) + "%"));
     }
 }

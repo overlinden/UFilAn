@@ -35,7 +35,7 @@ public class ProgressBar {
             }
         }
 
-        bar.append("]   " + percent + "%     ");
+        bar.append("]   ").append(percent).append("%     ");
         ConsolePrinter.getInstance().print("\r" + bar.toString());
     }
 }

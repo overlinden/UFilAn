@@ -41,16 +41,14 @@ public class DistributionHistogramPrinter implements Printer {
     @Override
     public void print(Result r, OutputStream os) {
         HashMap<Chunk, Integer> distribution = (HashMap<Chunk, Integer>)r.getResult();
-        
         ConsolePrinter.getInstance().println("Starting generation of histogram");
         
         int numEntries = distribution.size();
         int chunkLength = distribution.keySet().iterator().next().getLength();
         int imgWidth = (int)Math.pow(2, chunkLength * 8);
-        int maxValue = 1;
-        for (int i : distribution.values()) {
-            maxValue = Math.max(maxValue, i);
-        }
+        int maxValue = distribution.values().stream()
+                .max(Integer::compare)
+                .get();
         
         double yScaleFactor = 1.0;
         int imgHeight = (int) (maxValue * 1.2);
@@ -71,7 +69,7 @@ public class DistributionHistogramPrinter implements Printer {
         BufferedImage img = new BufferedImage((int) (imgWidth * xScaleFactor), (int) (imgHeight * yScaleFactor), BufferedImage.TYPE_BYTE_INDEXED);
         Graphics g = img.getGraphics();
         g.setColor(Color.WHITE);  
-        g.fillRect(0, 0, img.getWidth(), img.getHeight()); 
+        g.fillRect(0, 0, img.getWidth(), img.getHeight());
         g.setColor(Color.BLACK);
         int cnt = 0;
         for (Entry<Chunk, Integer> e : distribution.entrySet()) {
