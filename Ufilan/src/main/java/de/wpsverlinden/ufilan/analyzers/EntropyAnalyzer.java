@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map.Entry;
 
 public class EntropyAnalyzer implements ContentAnalyzer {
 
@@ -51,12 +50,12 @@ public class EntropyAnalyzer implements ContentAnalyzer {
         Iterator<Chunk> iter = distribution.keySet().iterator();
         int chunkBit = (iter.hasNext() ? 8 * iter.next().getLength() : 0);
         
-        float entropy = 0f;
         float p;
-        for (int e : distribution.values()) {
-            p = (float)e / (float)total;
-            entropy -= p * log(chunkBit, p);
-        }
+        double tmpEntropy = distribution.values().stream()
+                .mapToDouble((e) -> {float x = (float)e / (float)total; return x * log(chunkBit, x);})
+                .sum();
+        float entropy = -(float)tmpEntropy;
+
         return new Result(Result.TYPE.ENTROPY, entropy);
     }
     
