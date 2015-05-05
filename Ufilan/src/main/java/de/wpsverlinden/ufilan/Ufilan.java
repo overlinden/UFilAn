@@ -43,14 +43,13 @@ import org.apache.commons.cli.PosixParser;
 
 public class Ufilan {
 
-    private String[] args;
+    private final String[] args;
     private Options options;
     private OutputStream output = System.out;
     private InputStream input = System.in;
     private int chunkSize = 1;
     private int seekSize = 0;
     private String action = "";
-    private String actionParameter = "";
     private ContentAnalyzer ca;
     private Printer p;
 
@@ -80,7 +79,7 @@ public class Ufilan {
 
     private CommandLine initCli() throws ParseException {
         options = new Options();
-        options.addOption(OptionBuilder.withArgName("action")
+        options.addOption(OptionBuilder
                 .isRequired()
                 .hasArg()
                 .withDescription("action to perform (histogram_text, histogram_img, map, type, size, entropy)")
