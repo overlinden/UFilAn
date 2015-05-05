@@ -28,6 +28,8 @@ import de.wpsverlinden.ufilan.printers.DistributionHistogramPrinter;
 import de.wpsverlinden.ufilan.printers.DistributionTextPrinter;
 import de.wpsverlinden.ufilan.printers.InfoPrinter;
 import de.wpsverlinden.ufilan.printers.Printer;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -64,7 +66,7 @@ public class Ufilan {
     }
 
     private void start() {
-        System.out.println("UFilAn 1.0 - written by Oliver Verlinden (http://wps-verlinden.de)");
+        System.out.println("UFilAn 1.1-SNAPSHOT - written by Oliver Verlinden (http://wps-verlinden.de)");
         try {
             CommandLine cmd = initCli();
             prepareParameter(cmd);
@@ -120,10 +122,10 @@ public class Ufilan {
         action = cmd.getOptionValue("a");
         
         if (cmd.hasOption("if")) {
-            input = new FileInputStream(new File(cmd.getOptionValue("if")));
+            input = new BufferedInputStream(new FileInputStream(new File(cmd.getOptionValue("if"))));
         }
         if (cmd.hasOption("of")) {
-            output = new FileOutputStream(new File(cmd.getOptionValue("of")));
+            output = new BufferedOutputStream(new FileOutputStream(new File(cmd.getOptionValue("of"))));
             ConsolePrinter.getInstance().enable(); //enable log output on console when writing data stream to file
         }
         if (cmd.hasOption("c")) {
@@ -182,6 +184,6 @@ public class Ufilan {
     private void printHelp() {
         ConsolePrinter.getInstance().enable();
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("java -jar ufilan", options, true);
+        formatter.printHelp("java -jar ufilan.jar", options, true);
     }
 }

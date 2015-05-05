@@ -23,6 +23,7 @@ import de.wpsverlinden.ufilan.Chunk;
 import de.wpsverlinden.ufilan.ConsolePrinter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class ChunkLocationAnalyzer implements ContentAnalyzer {
     private final List<Chunk> chunks;
 
     public ChunkLocationAnalyzer(int chunkSize) {
-        this.chunks = new LinkedList<>();
+        this.chunks = new ArrayList<>();
         this.chunkSize = chunkSize;
     }
 
