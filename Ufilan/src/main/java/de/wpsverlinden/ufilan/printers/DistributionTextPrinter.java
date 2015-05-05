@@ -33,7 +33,7 @@ public class DistributionTextPrinter implements Printer {
     public void print(Result r, OutputStream os) {
         HashMap<Chunk, Integer> distribution = (HashMap<Chunk, Integer>)r.getResult();
         PrintStream ps = new PrintStream(os);
-        int total = distribution.values().parallelStream()
+        int total = distribution.values().stream()
                 .mapToInt((x) -> x)
                 .sum();
 

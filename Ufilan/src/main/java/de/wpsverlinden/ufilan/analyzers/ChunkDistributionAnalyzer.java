@@ -27,8 +27,8 @@ import java.util.HashMap;
 
 public class ChunkDistributionAnalyzer implements ContentAnalyzer {
 
-    private HashMap<Chunk, Integer> distribution;
-    private int chunkSize;
+    private final HashMap<Chunk, Integer> distribution;
+    private final int chunkSize;
 
     public ChunkDistributionAnalyzer(int chunkSize) {
         this.distribution = new HashMap<>();

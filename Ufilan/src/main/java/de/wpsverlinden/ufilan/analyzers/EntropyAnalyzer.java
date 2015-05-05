@@ -44,18 +44,17 @@ public class EntropyAnalyzer implements ContentAnalyzer {
         ContentAnalyzer ca = new ChunkDistributionAnalyzer(chunkSize);
         HashMap<Chunk, Integer> distribution = (HashMap<Chunk, Integer>) ca.analyze(is).getResult();
         
-        int total = 0;
-        for (int i : distribution.values()) {
-            total += i;
-        }
+        int total = distribution.values().stream()
+        .mapToInt((x) -> x)
+        .sum();
         
         Iterator<Chunk> iter = distribution.keySet().iterator();
         int chunkBit = (iter.hasNext() ? 8 * iter.next().getLength() : 0);
         
         float entropy = 0f;
         float p;
-        for (Entry<Chunk, Integer> e : distribution.entrySet()) {
-            p = (float)e.getValue() / (float)total;
+        for (int e : distribution.values()) {
+            p = (float)e / (float)total;
             entropy -= p * log(chunkBit, p);
         }
         return new Result(Result.TYPE.ENTROPY, entropy);

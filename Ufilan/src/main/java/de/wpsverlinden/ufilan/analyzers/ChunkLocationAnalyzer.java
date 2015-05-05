@@ -28,8 +28,8 @@ import java.util.List;
 
 public class ChunkLocationAnalyzer implements ContentAnalyzer {
 
-    private int chunkSize;
-    private List<Chunk> chunks;
+    private final int chunkSize;
+    private final List<Chunk> chunks;
 
     public ChunkLocationAnalyzer(int chunkSize) {
         this.chunks = new LinkedList<>();
@@ -44,7 +44,6 @@ public class ChunkLocationAnalyzer implements ContentAnalyzer {
         }
         ConsolePrinter.getInstance().println("Starting analyzing of contents");
 
-        Chunk chunk;
         byte[] current = new byte[chunkSize];
         while (is.read(current) != -1) {
             chunks.add(new Chunk(current));
