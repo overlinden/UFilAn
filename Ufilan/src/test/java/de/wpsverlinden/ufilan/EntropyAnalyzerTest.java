@@ -18,7 +18,6 @@
 
 package de.wpsverlinden.ufilan;
 
-import de.wpsverlinden.ufilan.ConsolePrinter;
 import de.wpsverlinden.ufilan.analyzers.EntropyAnalyzer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -43,42 +42,42 @@ public class EntropyAnalyzerTest {
     }
     
     @Test
-    public void testReturnsStringArray() throws IOException {
+    public void testReturnsFloat() throws IOException {
         InputStream is = new ByteArrayInputStream("".getBytes());
-        Object result = new EntropyAnalyzer(1).analyze(is);
-        assertNotNull(result);
-        assertTrue(result instanceof String[]);
+        Result result = new EntropyAnalyzer(1).analyze(is);
+        assertNotNull(result.getResult());
+        assertTrue(result.getResult() instanceof Float);
     }
     
     @Test
     public void testReturnsZeroForUniformInputCS1() throws IOException {
         InputStream is = new ByteArrayInputStream("1111".getBytes());
-        Object result = new EntropyAnalyzer(1).analyze(is);
-        String[] length = (String[])result;
-        assertEquals("0.0",length[1]);
+        Result result = new EntropyAnalyzer(1).analyze(is);
+        float length = (float)result.getResult();
+        assertEquals(0.0, length, 0.001);
     }
     
     @Test
     public void testReturnsZeroForUniformInputCS2() throws IOException {
         InputStream is = new ByteArrayInputStream("1111".getBytes());
-        Object result = new EntropyAnalyzer(2).analyze(is);
-        String[] length = (String[])result;
-        assertEquals("0.0",length[1]);
+        Result result = new EntropyAnalyzer(2).analyze(is);
+        float length = (float)result.getResult();
+        assertEquals(0.0, length, 0.001);
     }
     
     @Test
     public void testReturnsXForSymmetricInputCS1() throws IOException {
         InputStream is = new ByteArrayInputStream("1122".getBytes());
-        Object result = new EntropyAnalyzer(1).analyze(is);
-        String[] length = (String[])result;
-        assertEquals("0.33333334",length[1]);
+        Result result = new EntropyAnalyzer(1).analyze(is);
+        float length = (float)result.getResult();
+        assertEquals(0.33333334, length, 0.001);
     }
     
     @Test
     public void testReturnsXForSymmetricInputCS2() throws IOException {
         InputStream is = new ByteArrayInputStream("1122".getBytes());
-        Object result = new EntropyAnalyzer(2).analyze(is);
-        String[] length = (String[])result;
-        assertEquals("0.25",length[1]);
+        Result result = new EntropyAnalyzer(2).analyze(is);
+        float length = (float)result.getResult();
+        assertEquals(0.25, length, 0.001);
     }
 }

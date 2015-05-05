@@ -19,6 +19,7 @@
 package de.wpsverlinden.ufilan.printers;
 
 import de.wpsverlinden.ufilan.Chunk;
+import de.wpsverlinden.ufilan.Result;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.text.DecimalFormat;
@@ -34,8 +35,8 @@ public class DistributionTextPrinter implements Printer {
     private DecimalFormat df = new DecimalFormat("0.00");
 
     @Override
-    public void print(Object o, OutputStream os) {
-        HashMap<Chunk, Integer> distribution = (HashMap<Chunk, Integer>)o;
+    public void print(Result r, OutputStream os) {
+        HashMap<Chunk, Integer> distribution = (HashMap<Chunk, Integer>)r.getResult();
 
         PrintStream ps = new PrintStream(os);
         int total = 0;

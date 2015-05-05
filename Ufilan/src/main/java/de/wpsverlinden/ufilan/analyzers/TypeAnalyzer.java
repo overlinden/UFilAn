@@ -17,6 +17,7 @@
  */
 package de.wpsverlinden.ufilan.analyzers;
 
+import de.wpsverlinden.ufilan.Result;
 import com.j256.simplemagic.ContentInfo;
 import com.j256.simplemagic.ContentInfoUtil;
 import java.io.IOException;
@@ -25,12 +26,12 @@ import java.util.HashMap;
 
 public class TypeAnalyzer implements ContentAnalyzer {
 
-    private HashMap<String, String> result = new HashMap<>();
+    private final HashMap<String, String> result = new HashMap<>();
 
     @Override
-    public Object analyze(InputStream is) throws IOException {
+    public Result analyze(InputStream is) throws IOException {
         getContentInfo(is);
-        return result;
+        return new Result(Result.TYPE.TYPE, result);
     }
 
     private void getContentInfo(InputStream is) throws IOException {

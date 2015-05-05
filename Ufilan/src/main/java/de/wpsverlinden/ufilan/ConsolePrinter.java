@@ -21,7 +21,7 @@ package de.wpsverlinden.ufilan;
 public class ConsolePrinter {
     
     private boolean enabled = true;
-    private static ConsolePrinter logger = new ConsolePrinter();
+    private static final ConsolePrinter logger = new ConsolePrinter();
     
     public static ConsolePrinter getInstance() {
         return logger;

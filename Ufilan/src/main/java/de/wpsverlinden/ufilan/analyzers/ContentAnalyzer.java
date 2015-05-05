@@ -18,10 +18,11 @@
 
 package de.wpsverlinden.ufilan.analyzers;
 
+import de.wpsverlinden.ufilan.Result;
 import java.io.IOException;
 import java.io.InputStream;
 
 public interface ContentAnalyzer {
     
-    public Object analyze(InputStream is) throws IOException;
+    public Result analyze(InputStream is) throws IOException;
 }

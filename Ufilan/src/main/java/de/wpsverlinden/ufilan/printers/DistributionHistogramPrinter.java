@@ -20,6 +20,7 @@ package de.wpsverlinden.ufilan.printers;
 
 import de.wpsverlinden.ufilan.Chunk;
 import de.wpsverlinden.ufilan.ConsolePrinter;
+import de.wpsverlinden.ufilan.Result;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -32,14 +33,14 @@ import javax.imageio.ImageIO;
 
 public class DistributionHistogramPrinter implements Printer {
 
-    private static int MAX_HEIGHT = 2000;
-    private static int MIN_HEIGHT = 100;
-    private static int MAX_WIDTH = 2000;
-    private static int MIN_WIDTH = 100;
+    private static final int MAX_HEIGHT = 2000;
+    private static final int MIN_HEIGHT = 100;
+    private static final int MAX_WIDTH = 2000;
+    private static final int MIN_WIDTH = 100;
     
     @Override
-    public void print(Object o, OutputStream os) {
-        HashMap<Chunk, Integer> distribution = (HashMap<Chunk, Integer>)o;
+    public void print(Result r, OutputStream os) {
+        HashMap<Chunk, Integer> distribution = (HashMap<Chunk, Integer>)r.getResult();
         
         ConsolePrinter.getInstance().println("Starting generation of histogram");
         

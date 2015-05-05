@@ -20,6 +20,7 @@ package de.wpsverlinden.ufilan.printers;
 
 import de.wpsverlinden.ufilan.Chunk;
 import de.wpsverlinden.ufilan.ConsolePrinter;
+import de.wpsverlinden.ufilan.Result;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -30,13 +31,13 @@ import javax.imageio.ImageIO;
 
 public class BasicMapPrinter implements Printer {
     
-    private static int IMG_SIZE = 1000;
-    private static int MAX_FIELD_SIZE = 100;
-    private static int FIELDS_AVAILABLE = IMG_SIZE * IMG_SIZE;
+    private static final int IMG_SIZE = 1000;
+    private static final int MAX_FIELD_SIZE = 100;
+    private static final int FIELDS_AVAILABLE = IMG_SIZE * IMG_SIZE;
     
     @Override
-    public void print(Object o, OutputStream os) {
-        List<Chunk> chunks = (List<Chunk>)o;
+    public void print(Result r, OutputStream os) {
+        List<Chunk> chunks = (List<Chunk>)r.getResult();
         ConsolePrinter.getInstance().println("Starting generation of file map");
         
         int numChunks = chunks.size();

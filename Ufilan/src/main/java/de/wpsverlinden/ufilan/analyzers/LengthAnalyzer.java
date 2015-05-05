@@ -18,16 +18,16 @@
 
 package de.wpsverlinden.ufilan.analyzers;
 
+import de.wpsverlinden.ufilan.Result;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 
 public class LengthAnalyzer implements ContentAnalyzer {
 
-    private static int BUFF_SIZE = 4096;
-    private HashMap<String, String> result = new HashMap<>();
+    private static final int BUFF_SIZE = 4096;
+    
     @Override
-    public Object analyze(InputStream is) throws IOException {
+    public Result analyze(InputStream is) throws IOException {
 
         if (is == null) {
             throw new IOException("Invalid input stream");
@@ -39,7 +39,6 @@ public class LengthAnalyzer implements ContentAnalyzer {
         while ((bytesRead = is.read(tmp)) != -1) {
             size += bytesRead;
         }
-        result.put("Input length", size + " byte(s)");
-        return result;
+        return new Result(Result.TYPE.LENGTH, size);
     }
 }

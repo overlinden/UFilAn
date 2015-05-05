@@ -47,16 +47,16 @@ public class ChunkLocationAnalyzerTest {
     @Test
     public void testReturnsList() throws IOException {
         InputStream is = new ByteArrayInputStream("".getBytes());
-        Object result = new ChunkLocationAnalyzer(1).analyze(is);
-        assertNotNull(result);
-        assertTrue(result instanceof List);
+        Result result = new ChunkLocationAnalyzer(1).analyze(is);
+        assertNotNull(result.getResult());
+        assertTrue(result.getResult() instanceof List);
     }
     
     @Test
     public void testReturnsCorrectResultCS1() throws IOException {
         InputStream is = new ByteArrayInputStream("112".getBytes());
-        Object result = new ChunkLocationAnalyzer(1).analyze(is);
-        List<Chunk> list = (List<Chunk>)result;
+        Result result = new ChunkLocationAnalyzer(1).analyze(is);
+        List<Chunk> list = (List<Chunk>)result.getResult();
         assertEquals(3, list.size());
         assertEquals(new Chunk(new byte[]{0x31}), list.get(0));
         assertEquals(new Chunk(new byte[]{0x31}), list.get(1));
@@ -66,8 +66,8 @@ public class ChunkLocationAnalyzerTest {
     @Test
     public void testReturnsCorrectResultCS2() throws IOException {
         InputStream is = new ByteArrayInputStream("111122".getBytes());
-        Object result = new ChunkLocationAnalyzer(2).analyze(is);
-        List<Chunk> list = (List<Chunk>)result;
+        Result result = new ChunkLocationAnalyzer(2).analyze(is);
+        List<Chunk> list = (List<Chunk>)result.getResult();
         assertEquals(3, list.size());
         assertEquals(new Chunk(new byte[]{0x31, 0x31}), list.get(0));
         assertEquals(new Chunk(new byte[]{0x31, 0x31}), list.get(1));

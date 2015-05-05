@@ -18,6 +18,7 @@
 
 package de.wpsverlinden.ufilan.analyzers;
 
+import de.wpsverlinden.ufilan.Result;
 import de.wpsverlinden.ufilan.Chunk;
 import de.wpsverlinden.ufilan.ConsolePrinter;
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class ChunkDistributionAnalyzer implements ContentAnalyzer {
     }
 
     @Override
-    public Object analyze(InputStream is) throws IOException {
+    public Result analyze(InputStream is) throws IOException {
         
         if (is == null) {
             throw new IOException("Invalid input stream");
@@ -52,6 +53,6 @@ public class ChunkDistributionAnalyzer implements ContentAnalyzer {
         }
 
         ConsolePrinter.getInstance().println("Finished analyzing of contents");
-        return distribution;
+        return new Result(Result.TYPE.CHUNKDISTRIBUTION, distribution);
     }
 }

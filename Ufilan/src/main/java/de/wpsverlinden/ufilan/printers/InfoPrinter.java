@@ -17,6 +17,7 @@
  */
 package de.wpsverlinden.ufilan.printers;
 
+import de.wpsverlinden.ufilan.Result;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
@@ -28,8 +29,8 @@ public class InfoPrinter implements Printer {
     }
 
     @Override
-    public void print(Object o, OutputStream os) {
-        HashMap<String, String> info = (HashMap<String, String>) o;
+    public void print(Result r, OutputStream os) {
+        HashMap<String, String> info = (HashMap<String, String>) r.getResult();
         PrintStream ps = new PrintStream(os);
         ps.format("%15s | %s\n", "Name", "Value");
         for (Entry<String, String> e : info.entrySet()) {

@@ -18,6 +18,7 @@
 
 package de.wpsverlinden.ufilan.analyzers;
 
+import de.wpsverlinden.ufilan.Result;
 import de.wpsverlinden.ufilan.Chunk;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,21 +28,21 @@ import java.util.Map.Entry;
 
 public class EntropyAnalyzer implements ContentAnalyzer {
 
-    private int chunkSize;
+    private final int chunkSize;
     
     public EntropyAnalyzer(int chunkSize) {
         this.chunkSize = chunkSize;
     }
 
     @Override
-    public Object analyze(InputStream is) throws IOException {
+    public Result analyze(InputStream is) throws IOException {
 
         if (is == null) {
             throw new IOException("Invalid input stream");
         }
         
         ContentAnalyzer ca = new ChunkDistributionAnalyzer(chunkSize);
-        HashMap<Chunk, Integer> distribution = (HashMap<Chunk, Integer>) ca.analyze(is);
+        HashMap<Chunk, Integer> distribution = (HashMap<Chunk, Integer>) ca.analyze(is).getResult();
         
         int total = 0;
         for (int i : distribution.values()) {
@@ -57,7 +58,7 @@ public class EntropyAnalyzer implements ContentAnalyzer {
             p = (float)e.getValue() / (float)total;
             entropy -= p * log(chunkBit, p);
         }
-        return new String[]{"Entropy", "" + entropy};
+        return new Result(Result.TYPE.ENTROPY, entropy);
     }
     
     private double log(int base, double val) {

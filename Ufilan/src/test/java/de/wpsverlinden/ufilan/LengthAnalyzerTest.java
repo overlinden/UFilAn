@@ -23,6 +23,7 @@ import de.wpsverlinden.ufilan.analyzers.LengthAnalyzer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
@@ -43,18 +44,18 @@ public class LengthAnalyzerTest {
     }
     
     @Test
-    public void testReturnsStringArray() throws IOException {
+    public void testReturnsInteger() throws IOException {
         InputStream is = new ByteArrayInputStream("".getBytes());
-        Object result = new LengthAnalyzer().analyze(is);
-        assertNotNull(result);
-        assertTrue(result instanceof String[]);
+        Result result = new LengthAnalyzer().analyze(is);
+        assertNotNull(result.getResult());
+        assertTrue(result.getResult() instanceof Integer);
     }
     
     @Test
     public void testReturnsCorrectResult() throws IOException {
         InputStream is = new ByteArrayInputStream("12345".getBytes());
-        Object result = new LengthAnalyzer().analyze(is);
-        String[] length = (String[])result;
-        assertEquals("5 byte(s)",length[1]);
+        Result result = new LengthAnalyzer().analyze(is);
+        int length = (int)result.getResult();
+        assertEquals(5,length);
     }
 }

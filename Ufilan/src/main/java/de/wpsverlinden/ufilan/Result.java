@@ -16,14 +16,25 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.wpsverlinden.ufilan.printers;
+package de.wpsverlinden.ufilan;
 
-import de.wpsverlinden.ufilan.Result;
-import java.io.OutputStream;
-
-
-public interface Printer {
+public class Result {
     
-    public void print(Result r, OutputStream os);
+    public enum TYPE {CHUNKLOCATION, CHUNKDISTRIBUTION, CONTENT, ENTROPY, LENGTH, TYPE}
     
+    private final TYPE type;
+    private final Object result;
+
+    public Result(TYPE type, Object result) {
+        this.type = type;
+        this.result = result;
+    }
+
+    public TYPE getType() {
+        return type;
+    }
+
+    public Object getResult() {
+        return result;
+    }
 }

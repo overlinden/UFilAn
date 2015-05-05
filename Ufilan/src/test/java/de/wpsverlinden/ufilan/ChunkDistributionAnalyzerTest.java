@@ -18,8 +18,6 @@
 
 package de.wpsverlinden.ufilan;
 
-import de.wpsverlinden.ufilan.Chunk;
-import de.wpsverlinden.ufilan.ConsolePrinter;
 import de.wpsverlinden.ufilan.analyzers.ChunkDistributionAnalyzer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -47,16 +45,16 @@ public class ChunkDistributionAnalyzerTest {
     @Test
     public void testReturnsHashMap() throws IOException {
         InputStream is = new ByteArrayInputStream("".getBytes());
-        Object result = new ChunkDistributionAnalyzer(1).analyze(is);
+        Result result = new ChunkDistributionAnalyzer(1).analyze(is);
         assertNotNull(result);
-        assertTrue(result instanceof HashMap);
+        assertTrue(result.getResult() instanceof HashMap);
     }
     
     @Test
     public void testReturnsCorrectDistributionChunkSize1() throws IOException {
         InputStream is = new ByteArrayInputStream("112".getBytes());
-        Object result = new ChunkDistributionAnalyzer(1).analyze(is);
-        HashMap<Chunk, Integer> map = (HashMap<Chunk, Integer>)result;
+        Result result = new ChunkDistributionAnalyzer(1).analyze(is);
+        HashMap<Chunk, Integer> map = (HashMap<Chunk, Integer>)result.getResult();
         assertEquals(2, map.size());
         assertEquals(2, (int)map.get(new Chunk(new byte[]{49})));
         assertEquals(1, (int)map.get(new Chunk(new byte[]{50})));
@@ -65,8 +63,8 @@ public class ChunkDistributionAnalyzerTest {
     @Test
     public void testReturnsCorrectDistributionChunkSize2() throws IOException {
         InputStream is = new ByteArrayInputStream("111123".getBytes());
-        Object result = new ChunkDistributionAnalyzer(2).analyze(is);
-        HashMap<Chunk, Integer> map = (HashMap<Chunk, Integer>)result;
+        Result result = new ChunkDistributionAnalyzer(2).analyze(is);
+        HashMap<Chunk, Integer> map = (HashMap<Chunk, Integer>)result.getResult();
         assertEquals(2, map.size());
         assertEquals(2, (int)map.get(new Chunk(new byte[]{49, 49})));
         assertEquals(1, (int)map.get(new Chunk(new byte[]{50, 51})));

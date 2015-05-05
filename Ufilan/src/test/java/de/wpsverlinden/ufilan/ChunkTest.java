@@ -18,7 +18,7 @@
 
 package de.wpsverlinden.ufilan;
 
-import de.wpsverlinden.ufilan.Chunk;
+import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -43,6 +43,7 @@ public class ChunkTest {
         Chunk c1 = new Chunk(data1);
         Chunk c2 = new Chunk(data2);
         assertFalse(c1.equals(c2));
+        assertFalse(c1.equals(new Object()));
     }
     
     @Test
@@ -63,7 +64,7 @@ public class ChunkTest {
     public void testGetData() {
         byte[] data = new byte[]{0x00, 0x01, 0x02, 0x03, 0x04};
         Chunk c = new Chunk(data);
-        assertEquals(data, c.getData());
+        Assert.assertArrayEquals(data, c.getData());
     }
     
     @Test

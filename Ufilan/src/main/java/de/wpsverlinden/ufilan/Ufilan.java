@@ -176,7 +176,7 @@ public class Ufilan {
         while (seekSize > 0) {
             seekSize -= input.skip(chunkSize);
         }
-        Object result = ca.analyze(input);
+        Result result = ca.analyze(input);
         p.print(result, output);
     }
 
